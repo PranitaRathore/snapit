@@ -210,7 +210,7 @@ export default function InstantMemoryMaker() {
         let dw, dh, dx, dy;
         if (ar > war) { dh = wh; dw = wh * ar; dx = wx + (ww - dw) / 2; dy = wy; }
         else { dw = ww; dh = ww / ar; dx = wx; dy = wy + (wh - dh) / 2; }
-        ctx.save(); ctx.beginPath(); ctx.rect(wx, wy, ww, wh); ctx.clip();
+        ctx.save(); ctx.beginPath(); ctx.rect(wx-1, wy-1, ww+2, wh+2); ctx.clip();
         ctx.drawImage(img, dx, dy, dw, dh); ctx.restore();
         ctx.drawImage(frame, 0, 0, FW, FH);
         c.toBlob((b) => {
