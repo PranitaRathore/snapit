@@ -204,7 +204,7 @@ export default function InstantMemoryMaker() {
       img.onload = () => {
         // window rect in frame px (from measured %)
         const wx = 0.091 * FW, wy = 0.089 * FH, ww = 0.814 * FW, wh = 0.679 * FH;
-        ctx.fillStyle = "#000"; ctx.fillRect(wx, wy, ww, wh);
+        //ctx.fillStyle = "#000"; ctx.fillRect(wx, wy, ww, wh);
         // cover-fit the square photo into the window
         const ar = img.width / img.height, war = ww / wh;
         let dw, dh, dx, dy;
