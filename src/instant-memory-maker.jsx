@@ -57,37 +57,37 @@ function playBeep() {
   } catch (e) {}
 }
 
-// function FilterThumb({ videoRef, f, active, onPick }) {
-//   const ref = React.useRef(null);
-//   React.useEffect(() => {
-//     let raf;
-//     const draw = () => {
-//       const cv = ref.current, v = videoRef.current;
-//       if (cv && v && v.videoWidth) {
-//         const ctx = cv.getContext("2d");
-//         const size = Math.min(v.videoWidth, v.videoHeight);
-//         const sx = (v.videoWidth - size) / 2, sy = (v.videoHeight - size) / 2;
-//         ctx.save();
-//         ctx.filter = f.css === "none" ? "none" : f.css;
-//         ctx.translate(cv.width, 0); ctx.scale(-1, 1); // mirror
-//         ctx.drawImage(v, sx, sy, size, size, 0, 0, cv.width, cv.height);
-//         ctx.restore();
-//       }
-//       raf = requestAnimationFrame(draw);
-//     };
-//     draw();
-//     return () => cancelAnimationFrame(raf);
-//   }, [f, videoRef]);
-//   return (
-//     <div onClick={onPick} style={{ flex: "0 0 auto", cursor: "pointer", textAlign: "center" }}>
-//       <canvas ref={ref} width={96} height={96}
-//         style={{ width: 52, height: 52, borderRadius: "50%", objectFit: "cover",
-//           border: active ? "3px solid #fff" : "3px solid rgba(255,255,255,0.35)",
-//           boxShadow: active ? "0 0 0 2px #341d16" : "none" }} />
-//       <div style={{ color: "#fff", fontSize: 10, marginTop: 4, fontWeight: 700, opacity: active ? 1 : 0.7 }}>{f.label}</div>
-//     </div>
-//   );
-// }
+function FilterThumb({ videoRef, f, active, onPick }) {
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    let raf;
+    const draw = () => {
+      const cv = ref.current, v = videoRef.current;
+      if (cv && v && v.videoWidth) {
+        const ctx = cv.getContext("2d");
+        const size = Math.min(v.videoWidth, v.videoHeight);
+        const sx = (v.videoWidth - size) / 2, sy = (v.videoHeight - size) / 2;
+        ctx.save();
+        ctx.filter = f.css === "none" ? "none" : f.css;
+        ctx.translate(cv.width, 0); ctx.scale(-1, 1); // mirror
+        ctx.drawImage(v, sx, sy, size, size, 0, 0, cv.width, cv.height);
+        ctx.restore();
+      }
+      raf = requestAnimationFrame(draw);
+    };
+    draw();
+    return () => cancelAnimationFrame(raf);
+  }, [f, videoRef]);
+  return (
+    <div onClick={onPick} style={{ flex: "0 0 auto", cursor: "pointer", textAlign: "center" }}>
+      <canvas ref={ref} width={96} height={96}
+        style={{ width: 52, height: 52, borderRadius: "50%", objectFit: "cover",
+          border: active ? "3px solid #fff" : "3px solid rgba(255,255,255,0.35)",
+          boxShadow: active ? "0 0 0 2px #341d16" : "none" }} />
+      <div style={{ color: "#fff", fontSize: 10, marginTop: 4, fontWeight: 700, opacity: active ? 1 : 0.7 }}>{f.label}</div>
+    </div>
+  );
+}
 
 export default function InstantMemoryMaker() {
   const [state, setState] = useState("idle"); // idle | camera | captured
@@ -274,17 +274,13 @@ export default function InstantMemoryMaker() {
 
               {/* live filter previews along the bottom of the feed */}
               {countdown === null && (
-  <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, display: "flex", gap: 8, padding: "10px 12px 14px", overflowX: "auto", background: "linear-gradient(transparent, rgba(0,0,0,0.5))" }}>
-    {FILTERS.map((f) => (
-      <button key={f.id} onClick={() => setFilter(f)} style={{
-        flex: "0 0 auto", padding: "6px 14px", borderRadius: 999, border: "none", cursor: "pointer", fontSize: 12, fontWeight: 700,
-        background: filter.id === f.id ? "#fff" : "rgba(255,255,255,0.25)",
-        color: filter.id === f.id ? "#1f2937" : "#fff",
-      }}>{f.label}</button>
-    ))}
-  </div>
-)}
-)}
+                <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, display: "flex", gap: 10, padding: "10px 12px 12px", overflowX: "auto", background: "linear-gradient(transparent, rgba(0,0,0,0.45))" }}>
+                  {FILTERS.map((f) => (
+                    <FilterThumb key={f.id} videoRef={videoRef} f={f} active={filter.id === f.id} onPick={() => setFilter(f)} />
+                  ))}
+                </div>
+              )}
+            </div>
             <button onClick={startCountdown} disabled={countdown !== null}
               style={{ ...BTN.wide, background: countdown !== null ? "#b3a898" : "#8a7a68", marginTop: 16 }}>
               {countdown !== null ? "Capturing in " + countdown + "..." : "Capture Photo"}
