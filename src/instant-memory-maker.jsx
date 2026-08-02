@@ -213,6 +213,21 @@ export default function InstantMemoryMaker() {
         ctx.save(); ctx.beginPath(); ctx.rect(wx - 2, wy - 2, ww + 4, wh + 4); ctx.clip();
         ctx.drawImage(img, dx - 2, dy - 2, dw + 4, dh + 4); ctx.restore();
         ctx.drawImage(frame, 0, 0, FW, FH);
+        if (caption && caption.trim()) {
+        ctx.save();
+        ctx.font = "bold " + Math.round(FH * 0.054) + "px 'Caveat', cursive";
+        ctx.fillStyle = "#2a2a2a";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(caption, FW / 2, FH * 0.885, FW * 0.8);
+        ctx.restore();
+      }
+        // if (caption) {
+        // ctx.fillStyle = "#2a2a2a";
+        // ctx.font = "bold 52px cursive";
+        // ctx.textAlign = "center";
+        // ctx.fillText(caption, FW / 2, FH * 0.89);
+        // }
         c.toBlob((b) => {
           if (!b) return;
           const url = URL.createObjectURL(b);
@@ -225,7 +240,7 @@ export default function InstantMemoryMaker() {
       img.src = captured;
     };
     frame.src = FRAME_SRC;
-  }, [captured]);
+  }, [captured, caption]);
 
   const reset = useCallback(() => { setCaptured(null); setState("idle"); setDeveloping(false); setNote(""); setCaption(""); setNoteDone(false); }, []);
 
